@@ -6,3 +6,6 @@ spring run my-instance.groovy
 
 ## shell helper
 modify params in sInit.sh and run
+
+## make jars
+spring jar my-initializr.jar *.groovy
