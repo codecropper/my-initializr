@@ -2,9 +2,9 @@
 JAVA_VERSION=1.8
 BOOT_VERSION=1.5.8.RELEASE
 GROUP_ID=cn.imlh
-CLOUD_BASE_DEPENDENCE=web,cloud-starter
+BASE_DEPENDENCE=web,cloud-starter
 LANG=java
-TYPE=gradle-project
+TYPE=maven-project
 
 WORK_DIR=`dirname $0`
 
@@ -18,7 +18,7 @@ function init(){
     -d language=${LANG} -d type=${TYPE} \
     -d javaVersion=${JAVA_VERSION} -d bootVersion=${BOOT_VERSION} -d version=1.0.0.SNAPSHOT \
     -d groupId=${GROUP_ID} -d artifactId=${artifactId} -d baseDir=${artifactId} -d name=${name} \
-    -d dependencies=${CLOUD_BASE_DEPENDENCE},${dependencyX} \
+    -d dependencies=${BASE_DEPENDENCE},${dependencyX} \
     -d description=${description} \
     |tar -xzvf -
 
@@ -27,6 +27,13 @@ function init(){
     if [ -f $mavenWrapper ];then
         sed -e 's#https://repo1.maven.org/maven2#http://maven.aliyun.com/nexus/content/groups/public#g' -i $mavenWrapper
     fi
+
+    #　application.properties　-> application.yml
+    mv $artifactId/src/main/resources/application.properties $artifactId/src/main/resources/application.yml
+}
+
+function batchFileInit(){
+    echo '[log]unimplemented'
 }
 
 # gradle 阿里云加速
@@ -38,8 +45,11 @@ fi
 # example 
 #init sco-registry RegistryServer "Eureka server" cloud-eureka-server
 if [ $# -gt 0 ]; then
-    init $*
+    if [ -f $0 ];then
+        batchFileInit $0
+    else
+        init $*
+    fi
 else
-    echo '[log]init test Test "Test" cloud-eureka'
-    init test Test "Test" cloud-eureka
+    echo 'init test Test "Test" cloud-eureka'
 fi
