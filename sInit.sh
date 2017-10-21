@@ -1,7 +1,7 @@
 #!/bin/bash
 JAVA_VERSION=1.8
 BOOT_VERSION=1.5.6.RELEASE
-GROUP_ID=cc.coderider
+GROUP_ID=cn.imlh
 CLOUD_BASE_DEPENDENCE=web,devtools,cloud-starter,cloud-security,cloud-oauth2
 LANG=java
 TYPE=maven-project
@@ -19,6 +19,12 @@ function init(){
     -d dependencies=${CLOUD_BASE_DEPENDENCE},${dependencyX} \
     -d description=${description} \
     |tar -xzvf -
+
+    # 换阿里云wrapper加速
+    mavenWrapper=$artifactId/.mvn/wrapper/maven-wrappper.properties
+    if [ -f $mavenWrapper ];then
+        sed -e 's#https://repo1.maven.org/maven2#http://maven.aliyun.com/nexus/content/groups/public#g' -i $mavenWrapper
+    fi
 }
 
 # example 
