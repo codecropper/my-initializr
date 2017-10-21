@@ -4,7 +4,7 @@ BOOT_VERSION=1.5.6.RELEASE
 GROUP_ID=cn.imlh
 CLOUD_BASE_DEPENDENCE=web,devtools,cloud-starter,cloud-security,cloud-oauth2
 LANG=java
-TYPE=maven-project
+TYPE=gradle-project
 
 function init(){
     artifactId=$1;baseDir=$1 # set project folder=artifactId
@@ -21,12 +21,18 @@ function init(){
     |tar -xzvf -
 
     # 换阿里云wrapper加速
-    mavenWrapper=$artifactId/.mvn/wrapper/maven-wrappper.properties
+    mavenWrapper=$artifactId/.mvn/wrapper/maven-wrapper.properties
     if [ -f $mavenWrapper ];then
         sed -e 's#https://repo1.maven.org/maven2#http://maven.aliyun.com/nexus/content/groups/public#g' -i $mavenWrapper
     fi
 }
 
+# gradle 阿里云加速
+if [ "$TYPE"=="gradle-project" -a ! -f ~/.gradle/init.gradle ];then
+    echo "_______gradle use aliyun_________"
+    cp -r .gradle ~/
+fi
+
 # example 
 #init sco-registry RegistryServer "Eureka server" cloud-eureka-server
-init test Test 'Test sInit' ''
+init test Test "Test" cloud-eureka
