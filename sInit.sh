@@ -6,6 +6,8 @@ CLOUD_BASE_DEPENDENCE=web,devtools,cloud-starter,cloud-security,cloud-oauth2
 LANG=java
 TYPE=gradle-project
 
+WORK_DIR=`dirname $0`
+
 function init(){
     artifactId=$1;baseDir=$1 # set project folder=artifactId
     name=$2                  # project name
@@ -30,7 +32,7 @@ function init(){
 # gradle 阿里云加速
 if [ "$TYPE"=="gradle-project" -a ! -f ~/.gradle/init.gradle ];then
     echo "_______gradle use aliyun_________"
-    cp -r .gradle ~/
+    cp -rfv $WORK_DIR/.gradle ~/
 fi
 
 # example 
