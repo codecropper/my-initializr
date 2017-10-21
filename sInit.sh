@@ -1,8 +1,8 @@
 #!/bin/bash
 JAVA_VERSION=1.8
-BOOT_VERSION=1.5.6.RELEASE
+BOOT_VERSION=1.5.8.RELEASE
 GROUP_ID=cn.imlh
-CLOUD_BASE_DEPENDENCE=web,devtools,cloud-starter,cloud-security,cloud-oauth2
+CLOUD_BASE_DEPENDENCE=web,cloud-starter
 LANG=java
 TYPE=gradle-project
 
@@ -31,10 +31,15 @@ function init(){
 
 # gradle 阿里云加速
 if [ "$TYPE"=="gradle-project" -a ! -f ~/.gradle/init.gradle ];then
-    echo "_______gradle use aliyun_________"
+    echo "[log]gradle use aliyun"
     cp -rfv $WORK_DIR/.gradle ~/
 fi
 
 # example 
 #init sco-registry RegistryServer "Eureka server" cloud-eureka-server
-init test Test "Test" cloud-eureka
+if [ $# -gt 0 ]; then
+    init $*
+else
+    echo '[log]init test Test "Test" cloud-eureka'
+    init test Test "Test" cloud-eureka
+fi
